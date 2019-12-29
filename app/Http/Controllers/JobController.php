@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\Downloader;
 use App\Models\DownloaderJob;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
@@ -12,6 +15,13 @@ class JobController extends Controller
      */
     public function index()
     {
+        $link = 'https://gist.github.com/ar-android/c5b612c47631216cb0be722ea5640627/archive/4b215696c080ee28e7097a0f0425884910529497.zip';
+
+        $job = DownloaderJob::query()->create(['resource' => $link]);
+
+        $this->dispatch(new Downloader($job->id));
+
+
         $jobs = DownloaderJob::all();
         return view('index', [
             'jobs' => $jobs

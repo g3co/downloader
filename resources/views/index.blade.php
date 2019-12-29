@@ -1,3 +1,7 @@
+<?php
+/** @var \App\Models\DownloaderJob[]|\Illuminate\Database\Eloquent\Collection $jobs */
+?>
+
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
@@ -20,9 +24,6 @@
                 margin: 0;
             }
 
-            .full-height {
-                height: 100vh;
-            }
 
             .flex-center {
                 align-items: center;
@@ -42,6 +43,13 @@
 
             .content {
                 text-align: center;
+            }
+
+            .content table tr:nth-child(2) {
+                background: aliceblue;
+            }
+            .content table td {
+                padding: 10px 20px;
             }
 
             .title {
@@ -67,10 +75,29 @@
         <div class="flex-center position-ref full-height">
             <div class="content">
                 <div class="title m-b-md">
-                    Laravel
+                    Downloader
                 </div>
-
-
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>resource</th>
+                        <th>status</th>
+                        <th>created_at</th>
+                        <th>updated_at</th>
+                    </tr>
+                    @foreach($jobs as $job)
+                        <tr>
+                            <td>@if($job->filename)
+                                    <a href="{{\Illuminate\Support\Facades\Storage::url($job->filename)}}">download</a>
+                                @endif
+                            </td>
+                            <td>{{$job->resource}}</td>
+                            <td>{{$job->status}}</td>
+                            <td>{{$job->created_at}}</td>
+                            <td>{{$job->updated_at}}</td>
+                        </tr>
+                    @endforeach
+                </table>
             </div>
         </div>
     </body>
