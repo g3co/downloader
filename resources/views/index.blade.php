@@ -74,8 +74,16 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
+                @if (session()->has('flash_message'))
+                    <div>
+                        {{ session('flash_message') }}
+                    </div>
+                @endif
                 <div class="title m-b-md">
                     Downloader
+                </div>
+                <div>
+                    <a href="{{ route('createPage') }}">Download new file</a>
                 </div>
                 <table>
                     <tr>

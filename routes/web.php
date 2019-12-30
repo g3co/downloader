@@ -11,4 +11,6 @@
 |
 */
 
-Route::get('/', 'JobController@index');
+Route::get('/', 'JobController@index')->name('indexPage');
+Route::get('/create', 'JobController@createPage')->name('createPage');
+Route::post('/create', 'JobController@createHandler')->name('createHandler');

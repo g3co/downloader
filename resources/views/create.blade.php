@@ -1,5 +1,9 @@
+<?php
+/** @var \App\Models\DownloaderJob[]|\Illuminate\Database\Eloquent\Collection $jobs */
+?>
+
 <!DOCTYPE html>
-<html lang="<?php echo e(str_replace('_', '-', app()->getLocale())); ?>">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -20,9 +24,6 @@
                 margin: 0;
             }
 
-            .full-height {
-                height: 100vh;
-            }
 
             .flex-center {
                 align-items: center;
@@ -42,6 +43,13 @@
 
             .content {
                 text-align: center;
+            }
+
+            .content table tr:nth-child(2) {
+                background: aliceblue;
+            }
+            .content table td {
+                padding: 10px 20px;
             }
 
             .title {
@@ -66,13 +74,22 @@
     <body>
         <div class="flex-center position-ref full-height">
             <div class="content">
+                @if (session()->has('flash_message'))
+                    <div>
+                        {{ session('flash_message') }}
+                    </div>
+                @endif
+
                 <div class="title m-b-md">
-                    Laravel
+                    Downloader
                 </div>
-
-
+                <div class="title m-b-md">
+                    {{ Form::open(array('url' => route('createHandler'))) }}
+                        <input name="link"/>
+                        <input type="submit" value="download"/>
+                    {{ Form::close() }}
+                </div>
             </div>
         </div>
     </body>
 </html>
-<?php /**PATH /home/valera/work/test/downloader/resources/views/welcome.blade.php ENDPATH**/ ?>

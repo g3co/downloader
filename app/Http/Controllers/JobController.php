@@ -2,95 +2,56 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateNewDownload;
 use App\Jobs\Downloader;
 use App\Models\DownloaderJob;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class JobController extends Controller
 {
     /**
-     * Display a listing of the resource
+     * Display a listing of the jobs
+     *
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
     {
-        $link = 'https://gist.github.com/ar-android/c5b612c47631216cb0be722ea5640627/archive/4b215696c080ee28e7097a0f0425884910529497.zip';
-
-        $job = DownloaderJob::query()->create(['resource' => $link]);
-
-        $this->dispatch(new Downloader($job->id));
-
-
         $jobs = DownloaderJob::all();
+
         return view('index', [
             'jobs' => $jobs
         ]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Page for create new job
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function create()
+    public function createPage()
     {
-        //
+        return view('create');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Handler for creating new download task
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param CreateNewDownload $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function store(Request $request)
+    public function createHandler(CreateNewDownload $request)
     {
-        //
-    }
+        $data = $request->validated();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        $job = DownloaderJob::query()->create(['resource' => $data['link']]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+        if ($job) {
+            return redirect()->route('createPage')->with('flash_message', 'Job creating error');
+        }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+        Downloader::dispatch($job->id);
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        return redirect()->route('indexPage')->with('flash_message', 'New download has created');
     }
 }
