@@ -4,8 +4,6 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Ramsey\Uuid\Uuid;
-use function foo\func;
 
 /**
  * Class DownloaderJob
@@ -35,10 +33,4 @@ class DownloaderJob extends Model
     protected $fillable = [
         'resource'
     ];
-
-    public function failJob()
-    {
-        $this->status = self::STATUS_ERROR;
-        $this->update();
-    }
 }

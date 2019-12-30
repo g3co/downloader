@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CreateNewDownload;
 use App\Jobs\Downloader;
 use App\Models\DownloaderJob;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class JobController extends Controller
 {

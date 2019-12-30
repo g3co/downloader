@@ -59,7 +59,8 @@ class Downloader implements ShouldQueue
             $this->jobObj->status = DownloaderJob::STATUS_COMPLETE;
             $this->jobObj->update();
         } catch (\Exception $e) {
-            $this->jobObj->failJob();
+            $this->jobObj->status = DownloaderJob::STATUS_ERROR;
+            $this->jobObj->update();
         }
     }
 }

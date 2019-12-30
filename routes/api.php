@@ -13,5 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', 'Api\JobController@index')->name('indexRoute');
-Route::post('/download', 'Api\JobController@create')->name('createRoute');
+Route::get('/downloads', 'Api\JobController@index')->name('indexRoute');
+Route::post('/downloads/job', 'Api\JobController@create')->name('createRoute');
